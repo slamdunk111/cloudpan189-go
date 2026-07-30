@@ -72,8 +72,9 @@ func init() {
 func checkLoginExpiredAndRelogin() {
 	cmder.ReloadConfigFunc(nil)
 	activeUser := config.Config.ActiveUser()
-	if activeUser == nil || activeUser.UID != 0 {
-		// maybe expired, try to login
+	if cmder.ShouldRelogin(activeUser) {
+		// 没有可复用的缓存用户（首次登录 / 完全登出）才走密码登录；
+		// 已有缓存用户直接复用 sessionKey/sessionSecret，不再每条命令重复密码登录（避免天翼限流）。
 		cmder.TryLogin()
 	}
 	cmder.SaveConfigFunc(nil)

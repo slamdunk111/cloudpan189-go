@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+//	http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,6 @@ import (
 
 	"github.com/tickstep/cloudpan189-api/cloudpan"
 	"github.com/tickstep/cloudpan189-go/cmder/cmdtable"
-	"github.com/tickstep/library-go/text"
 )
 
 func CmdShare() cli.Command {
@@ -267,7 +266,7 @@ func RunShareSave(shareUrl, savePanDirPath string) {
 
 	savePanDirPath = activeUser.PathJoin(0, savePanDirPath)
 	if savePanDirPath[len(savePanDirPath)-1] == '/' {
-		savePanDirPath = text.Substr(savePanDirPath, 0, len(savePanDirPath)-1)
+		savePanDirPath = strings.TrimSuffix(savePanDirPath, "/")
 	}
 	fi, apier := activeUser.PanClient().FileInfoByPath(savePanDirPath)
 	if apier != nil {

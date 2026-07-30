@@ -35,6 +35,16 @@ var (
 	}
 )
 
+// ShouldRelogin 判断是否需要走密码重登。
+//
+// 仅当"没有可复用的缓存用户"（activeUser==nil 或 UID==0 的空 stub）时才返回 true。
+// 已有缓存用户（UID!=0）一律返回 false —— 直接复用其缓存的 AppToken / sessionKey /
+// sessionSecret，不再每条命令都做密码登录（这是天翼服务端"密码登录请求次数已达上限"
+// 限流的根因，见 main.go 的 checkLoginExpiredAndRelogin）。
+func ShouldRelogin(activeUser *config.PanUser) bool {
+	return activeUser == nil || activeUser.UID == 0
+}
+
 func SetApp(app *cli.App) {
 	appInstance = app
 }
